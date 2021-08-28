@@ -17,33 +17,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
-#include <stdio.h>
+#include <stdio.h>      
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_split_3x6_3(
-    //L_NUMPAD_F
-    //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-LT(2,KC_ESCAPE),  KC_QUOT, KC_COMM,  KC_DOT,    KC_P,    KC_Y,                         KC_F,    KC_G,    KC_C,    KC_R,   KC_L,  KC_BSPC,
-    //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-         KC_TAB,    KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                         KC_D,    KC_H,    KC_T,    KC_N,   KC_S,  KC_MINS,
-    //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
- LSFT_T(KC_BSLS), KC_SCLN,    KC_Q,    KC_J,    KC_K,    KC_X,                         KC_B,    KC_M,    KC_W,    KC_V,   KC_Z,  RSFT_T(KC_SLSH),
-    //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, MO(1), KC_SPACE,   KC_ENTER, MO(3), KC_LCTL
+    
+    //L_QWERTY
+     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+ LT(2,KC_ESCAPE),    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+          KC_TAB,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_LBRC,
+     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+         KC_RSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M,KC_COMMA,  KC_DOT,KC_SLASH,  KC_LSFT,
+     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                       KC_LGUI, KC_SPACE,   MO(1),        MO(3), KC_ENTER, KC_LCTL
                                     //`--------------------------'  `--------------------------'
-                                                //L_NAVIGATE              //L_SYMBOLS               
+                                                      //L_NAVIGATE       //L_SYMBOLS               
   ),
 
-  //L_NAVIGATE
+  //L_NAVIGATE // TERMINADO
   [1] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      KC_ESCAPE, XXXXXXX, XXXXXXX, KC_LALT,KC_F4, LCA(KC_DEL),                     KC_PGUP, KC_HOME,   KC_UP,  KC_END, XXXXXXX, KC_BSPC,
+    KC_ESCAPE,XXXXXXX,RALT(KC_NUHS),KC_MINS,RSFT(KC_2),LCTL(KC_Y),                 KC_PGUP, KC_HOME,   KC_UP,  KC_END, XXXXXXX, KC_BSPC,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,LCTL(KC_Y), KC_LCTL, KC_LSFT, KC_LGUI, XXXXXXX,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, XXXXXXX,  KC_DEL,
+        _______, XXXXXXX, XXXXXXX, KC_LCTL, KC_LSFT, KC_LGUI,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, XXXXXXX,  KC_DEL,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-LSFT_T(KC_BSLS),LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V),XXXXXXX,               KC_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
+       _______,LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V),XXXXXXX,               KC_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         KC_LGUI, XXXXXXX ,KC_SPACE,   KC_ENTER, XXXXXXX, KC_LCTL
+                                           KC_LGUI, KC_LALT, XXXXXXX,    XXXXXXX , KC_ENTER, KC_LCTL
                                       //`--------------------------'  `--------------------------'
 // MY_UNDO  "LCTL(KC_Z)"
 // MY_REDO  "LCTL(KC_Y)"
@@ -52,29 +53,29 @@ LSFT_T(KC_BSLS),LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V),XXXXXXX,            
 // MY_PASTE "LCTL(KC_V)"  
   ),
 
-  //L_NUMPAD_F
+  //L_NUMPAD_F // TERMINADO
   [2] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    KC_ESCAPE,   KC_F1,   KC_F2,   KC_F3,   KC_F4, GUI_OFF,                      KC_PPLS,    KC_7,    KC_8,    KC_9, KC_MINS, KC_BSPC,
+      XXXXXXX,   KC_F1,   KC_F2,   KC_F3,   KC_F4,  GUI_ON,                      KC_PPLS,   KC_P7,   KC_P8,   KC_P9, KC_PMNS, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LALT,   KC_F8,   KC_F7,   KC_F6,   KC_F5,  GUI_ON,                      KC_PAST,    KC_4,    KC_5,    KC_6, KC_SLSH,  KC_EQL,
+      _______,   KC_F8,   KC_F7,   KC_F6,   KC_F5, GUI_OFF,                      KC_PAST,   KC_P4,   KC_P5,   KC_P6, KC_PSLS,RSFT(KC_0),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12, XXXXXXX,                      KC_COMM,    KC_1,    KC_2,    KC_3,    KC_0, KC_PDOT,
+      _______,   KC_F9,  KC_F10,  KC_F11,  KC_F12, XXXXXXX,                      KC_COMM,   KC_P1,   KC_P2,   KC_P3,   KC_P0, KC_PDOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, XXXXXXX ,KC_SPACE,   KC_ENTER, XXXXXXX, KC_LCTL
+                                          KC_LGUI, KC_LALT, XXXXXXX,   XXXXXXX , KC_ENTER, KC_LCTL
                                       //`--------------------------'  `--------------------------'
   ),
 
   //L_SYMBOLS
   [3] = LAYOUT_split_3x6_3(
    //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_PIPE, KC_EXLM,   KC_AT, KC_LPRN, KC_RPRN, KC_HASH,                      KC_PERC, KC_SLSH, KC_BSLS, KC_EQL, XXXXXXX, KC_BSPC,
+       KC_GRV ,    KC_1,   KC_2,    KC_3,    KC_4,     KC_5,                         KC_6,    KC_7,   KC_8,   KC_9,RALT(KC_MINUS), KC_BSPC,
    //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       KC_LALT,KC_MINUS, KC_UNDS, KC_LCBR, KC_RCBR, KC_TILD,                      KC_AMPR,   KC_LT,   KC_GT, KC_CIRC, XXXXXXX,  KC_DEL,
+_______,RSFT(KC_7),RALT(KC_MINUS),KC_QUOT,KC_NUHS,RSFT(KC_1),            RSFT(KC_MINUS),RSFT(KC_8),RSFT(KC_8),KC_NUBS,RSFT(KC_NUBS),KC_DEL,
    //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-SFT_T(KC_BSLS), XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC,  KC_DLR,                      KC_GRV,LSFT(KC_QUOT),KC_QUOT,XXXXXXX,XXXXXXX,RSFT_T(KC_SLSH),
+_______,RALT(KC_QUOT),RALT(KC_RBRC),RSFT(KC_QUOT),RSFT(KC_NUHS),RSFT(KC_EQL),     KC_EQL, RSFT(KC_2),KC_MINS, RALT(KC_NUHS),XXXXXXX,KC_LSFT,
    //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, XXXXXXX ,KC_SPACE,   KC_ENTER, XXXXXXX, KC_LCTL
+                                          KC_LGUI, KC_RSFT, XXXXXXX,   XXXXXXX , KC_ENTER, KC_LCTL
                                       //`--------------------------'  `--------------------------'
   )
 
@@ -89,7 +90,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   return rotation;
 }
 
-#define L_DVORAK   0
+#define L_QWERTY   0
 #define L_NAVIGATE 2
 #define L_NUMPAD_F 4
 #define L_SYMBOLS  8
@@ -97,7 +98,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 void oled_render_layer_state(void) {
     oled_write_P(PSTR("Layer: "), false);
     switch (layer_state) {
-        case L_DVORAK:
+        case L_QWERTY:
             oled_write_ln_P(PSTR("DVORAK"), false);
             break;
         case L_NAVIGATE:
