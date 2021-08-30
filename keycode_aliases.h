@@ -1,5 +1,10 @@
 #pragma once
 
+
+#define NAVIGATE		 MO(1)
+#define SYMBOLS			 MO(2)
+#define LT_NUMPAD_ESCAPE LT(3,KC_ESCAPE)
+
 #define UNDO	  		LCTL(KC_Z)
 #define REDO	  		LCTL(KC_Y)
 #define CUT	  			LCTL(KC_X)
@@ -28,3 +33,5 @@
 #define CSQUAREB		RSFT(KC_NUHS)
 #define CEXCLA			RSFT(KC_EQL)    
 #define CINTERR			KC_EQL
+
+#define TERMINAL		LCTL(LALT(KC_T))
