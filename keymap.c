@@ -73,9 +73,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-void process_record_for_time(keyrecord_t *record, uint16_t *timer, uint8_t key, bool flag) {
+void process_record_for_time(bool event_pressed, uint16_t *timer, uint8_t key, bool flag) {
     
-    if(record->event.pressed) {
+    if(event_pressed) {
         if(flag) {
             tap_code(key); //diseable caps
         } else {
@@ -106,7 +106,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case K_CAPS:
-            process_record_for_time(record, &is_timer_caps, KC_CAPS, host_keyboard_led_state().caps_lock);
+            process_record_for_time(record->event.pressed, &is_timer_caps, KC_CAPS, host_keyboard_led_state().caps_lock);
             break;
         default:
             break;
