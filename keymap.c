@@ -15,20 +15,19 @@ enum corne_layers {
 
 enum custom_keycodes {
     SW_GUI = SAFE_RANGE,
-    _LSFT_E1, // LSFT in hold or "\n" in tap
-    _RSFT_E2, // RSFT in hold or \ in tap 
+    COMMENT,
     K_CAPS
 };
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3(
-    //.-----------------------------------------------------.                    .-----------------------------------------------------.
+        //.-----------------------------------------------------.                    .-----------------------------------------------------.
    LT_NUMPAD_ESCAPE,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
              KC_TAB,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_LBRC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-           _LSFT_E1,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M,KC_COMMA,  KC_DOT,KC_SLASH,_RSFT_E2,
+            KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M,KC_COMMA,  KC_DOT,KC_SLASH, KC_RSFT,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 KC_LGUI,KC_SPACE,NAVIGATE,    SYMBOLS,KC_ENTER, KC_LCTL
                                             //`--------------------------´  `--------------------------'
@@ -36,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
       [_NAVIGATE] = LAYOUT_split_3x6_3(
         //.-----------------------------------------------------.                    .-----------------------------------------------------.
-          KC_ESCAPE, XXXXXXX,ICOMILLA,SCOMILLA,DCOMILLA,    REDO,                      KC_PGUP, KC_HOME,   KC_UP,  KC_END, XXXXXXX, KC_BSPC,
+          KC_ESCAPE, COMMENT,ICOMILLA,SCOMILLA,DCOMILLA,    REDO,                      KC_PGUP, KC_HOME,   KC_UP,  KC_END, XXXXXXX, KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, XXXXXXX, XXXXXXX, KC_LCTL, KC_LSFT, KC_LGUI,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, KC_LALT,  KC_DEL,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -99,6 +98,40 @@ void process_record_toggle_magic(keyrecord_t *record, int key_on, int key_off, b
 }
 
 
+typedef void (*ptr_function) (void);
+
+void process_record_tap_1(void) {
+    //for Spanish keyboard -> line commnet
+    register_code(KC_LCTL);
+    tap_code(KC_NUHS);
+    unregister_code(KC_LCTL);
+}
+
+void process_record_hold_1(void) {
+    //for Spanish keyboard -> block commnet
+    register_code(KC_LCTL);
+    register_code(KC_LSFT);
+    tap_code(KC_NUHS);
+    unregister_code(KC_LSFT);
+    unregister_code(KC_LCTL);
+}
+
+void process_record_tap_hold(bool event_pressed, uint8_t tap_delay, ptr_function tap, ptr_function hold) {
+
+    static uint16_t timer = 0;
+    if(event_pressed) {
+        timer = timer_read();
+    } else {
+        if(timer_elapsed(timer) > tap_delay) {
+            hold();
+        } else {
+            tap();
+        }
+    }
+}
+
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     if(record->event.pressed) { //press any key it'll reset the is_timer_caps
@@ -112,6 +145,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case K_CAPS:
             process_record_for_time(record->event.pressed, &is_timer_caps, KC_CAPS, host_keyboard_led_state().caps_lock);
             break;
+        case COMMENT:
+            process_record_tap_hold(record->event.pressed, 250, process_record_tap_1, process_record_hold_1);
         default:
             break;
     }
