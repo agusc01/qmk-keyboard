@@ -34,3 +34,5 @@
 #define CINTERR				KC_EQL
 
 #define TERMINAL			LCTL(LALT(KC_T))
+
+#define MOVE				LCTL(KC_LSFT)

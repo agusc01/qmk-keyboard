@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,   CLONE, XXXXXXX, KC_LCTL, KC_LSFT, KC_LGUI,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, KC_LALT,  KC_DEL,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______,    UNDO,     CUT,    COPY,   PASTE,  K_CAPS,                       K_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
+            _______,    UNDO,     CUT,    COPY,   PASTE,    MOVE,                       K_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 _______, _______, XXXXXXX,    XXXXXXX, _______, _______
                                             //`--------------------------´  `--------------------------'
@@ -143,7 +143,6 @@ void process_record_tap_hold(bool event_pressed, uint8_t tap_delay, ptr_function
         }
     }
 }
-
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
