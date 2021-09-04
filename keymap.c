@@ -16,6 +16,7 @@ enum corne_layers {
 enum custom_keycodes {
     SW_GUI = SAFE_RANGE,
     COMMENT,
+    CLONE,
     K_CAPS
 };
 
@@ -37,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //.-----------------------------------------------------.                    .-----------------------------------------------------.
           KC_ESCAPE, COMMENT,ICOMILLA,SCOMILLA,DCOMILLA,    REDO,                      KC_PGUP, KC_HOME,   KC_UP,  KC_END, XXXXXXX, KC_BSPC,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______, XXXXXXX, XXXXXXX, KC_LCTL, KC_LSFT, KC_LGUI,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, KC_LALT,  KC_DEL,
+            _______,   CLONE, XXXXXXX, KC_LCTL, KC_LSFT, KC_LGUI,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, KC_LALT,  KC_DEL,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______,    UNDO,     CUT,    COPY,   PASTE,  K_CAPS,                       K_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -100,14 +101,14 @@ void process_record_toggle_magic(keyrecord_t *record, int key_on, int key_off, b
 
 typedef void (*ptr_function) (void);
 
-void process_record_tap_1(void) {
+void line_comment(void) {
     //for Spanish keyboard -> line commnet
     register_code(KC_LCTL);
     tap_code(KC_NUHS);
     unregister_code(KC_LCTL);
 }
 
-void process_record_hold_1(void) {
+void block_comment(void) {
     //for Spanish keyboard -> block commnet
     register_code(KC_LCTL);
     register_code(KC_LSFT);
@@ -115,6 +116,19 @@ void process_record_hold_1(void) {
     unregister_code(KC_LSFT);
     unregister_code(KC_LCTL);
 }
+
+void line_clone(void) {
+    register_code(KC_LCTL);
+    register_code(KC_LSFT);
+    tap_code(KC_D);
+    unregister_code(KC_LSFT);
+    unregister_code(KC_LCTL); 
+}
+
+void void_function(void) {
+    // nothing
+}
+
 
 void process_record_tap_hold(bool event_pressed, uint8_t tap_delay, ptr_function tap, ptr_function hold) {
 
@@ -146,7 +160,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             process_record_for_time(record->event.pressed, &is_timer_caps, KC_CAPS, host_keyboard_led_state().caps_lock);
             break;
         case COMMENT:
-            process_record_tap_hold(record->event.pressed, 250, process_record_tap_1, process_record_hold_1);
+            process_record_tap_hold(record->event.pressed, TIME_TAP_HOLD, line_comment, block_comment);
+            break;
+        case CLONE:
+            process_record_tap_hold(record->event.pressed, TIME_TAP_HOLD, line_clone, void_function);
+            break;
         default:
             break;
     }
