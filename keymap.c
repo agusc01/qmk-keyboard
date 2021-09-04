@@ -77,10 +77,23 @@ void process_record_for_time(bool event_pressed, uint16_t *timer, uint8_t key, b
     
     if(event_pressed) {
         if(flag) {
-            tap_code(key); //diseable caps
+            tap_code(key); //diseable
         } else {
             tap_code(key); //enable 
             *timer = timer_read();
+        }
+    }
+}
+
+void process_record_toggle_magic(keyrecord_t *record, int key_on, int key_off, bool *state) {
+
+    if(record->event.pressed) {
+        if(*state) {
+            process_magic(key_off, record); //diseable
+            *state = false;
+        } else {
+            process_magic(key_on, record); //enable
+            *state = true;
         }
     }
 }
@@ -94,16 +107,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     
     switch(keycode) {
         case SW_GUI:
-            if(record->event.pressed) {
-                if(state_GUI) {      
-                    process_magic(GUI_OFF, record);
-                    state_GUI = false;
-                }
-                else {
-                    process_magic(GUI_ON, record);
-                    state_GUI = true;
-                }
-            }
+            process_record_toggle_magic(record, GUI_ON, GUI_OFF, &state_GUI);
             break;
         case K_CAPS:
             process_record_for_time(record->event.pressed, &is_timer_caps, KC_CAPS, host_keyboard_led_state().caps_lock);
