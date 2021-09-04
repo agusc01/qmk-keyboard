@@ -3,7 +3,8 @@
 #include "config.h"
 #include <stdio.h>      
 
-bool state_GUI=false;
+uint16_t is_timer_caps = 0;
+bool state_GUI = false;
 
 enum corne_layers { 
     _QWERTY,
@@ -39,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
             _______, XXXXXXX, XXXXXXX, KC_LCTL, KC_LSFT, KC_LGUI,                    KC_PGDOWN, KC_LEFT, KC_DOWN,KC_RIGHT, KC_LALT,  KC_DEL,
         //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-            _______,    UNDO,     CUT,    COPY,   PASTE, XXXXXXX,                       K_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
+            _______,    UNDO,     CUT,    COPY,   PASTE,  K_CAPS,                       K_CAPS, KC_MPRV, KC_MNXT, KC_MPLY, KC_VOLD, KC_VOLU,
         //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                                 _______, _______, XXXXXXX,    XXXXXXX, _______, _______
                                             //`--------------------------´  `--------------------------'
@@ -72,7 +73,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
+void process_record_for_time(keyrecord_t *record, uint16_t *timer, uint8_t key, bool flag) {
+    
+    if(record->event.pressed) {
+        if(flag) {
+            tap_code(key); //diseable caps
+        } else {
+            tap_code(key); //enable 
+            *timer = timer_read();
+        }
+    }
+}
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    if(record->event.pressed) { //press any key it'll reset the is_timer_caps
+        is_timer_caps = timer_read();
+    }
+    
     switch(keycode) {
         case SW_GUI:
             if(record->event.pressed) {
@@ -86,12 +105,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
+        case K_CAPS:
+            process_record_for_time(record, &is_timer_caps, KC_CAPS, host_keyboard_led_state().caps_lock);
+            break;
         default:
             break;
     }
     return true;
 }
 
+
+void matrix_scan_user(void) { 
+
+    if (host_keyboard_led_state().caps_lock) {
+        if (timer_elapsed(is_timer_caps) > TIME_CAPS_ACTIVE) {
+            tap_code(KC_CAPS); //diseable caps
+       }
+    } 
+}
 
 #ifdef OLED_DRIVER_ENABLE
 

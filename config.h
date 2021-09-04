@@ -9,3 +9,5 @@
 
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 250
+
+#define TIME_CAPS_ACTIVE 10000
