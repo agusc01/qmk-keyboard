@@ -1,7 +1,7 @@
 #pragma once
 
-#define NAVIGATE		 	MO(1)
-#define SYMBOLS			 	MO(2)
+#define LT_NAVIGATE		 	LT(1,KC_SPACE)
+#define LT_SYMBOLS			LT(2,KC_ENTER)
 #define LT_NUMPAD_ESCAPE 	LT(3,KC_ESCAPE)
 
 #define UNDO	  			LCTL(KC_Z)
