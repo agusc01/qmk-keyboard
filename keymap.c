@@ -144,6 +144,12 @@ void process_record_tap_hold(bool event_pressed, uint8_t tap_delay, ptr_function
     }
 }
 
+void process_record_simple(bool event_pressed, ptr_function function) {
+
+    if(event_pressed) {
+        function();
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -162,7 +168,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             process_record_tap_hold(record->event.pressed, TIME_TAP_HOLD, line_comment, block_comment);
             break;
         case CLONE:
-            process_record_tap_hold(record->event.pressed, TIME_TAP_HOLD, line_clone, void_function);
+            process_record_simple(record->event.pressed, line_clone);
             break;
         default:
             break;
