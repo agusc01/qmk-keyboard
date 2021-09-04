@@ -176,6 +176,7 @@ void matrix_scan_user(void) {
     if (host_keyboard_led_state().caps_lock) {
         if (timer_elapsed(is_timer_caps) > TIME_CAPS_ACTIVE) {
             tap_code(KC_CAPS); //diseable caps
+            is_timer_caps = timer_read(); //don't remove this line
        }
     } 
 }
